@@ -1,7 +1,6 @@
 from . import constant as const
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 
 
 BASE_URL = const.BASE_URL
