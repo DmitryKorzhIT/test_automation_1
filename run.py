@@ -7,8 +7,9 @@ app = AddToWatchlist()
 app.land_first_page()
 app.password_auth()
 app.burger_menu_item()
-app.click_on_watchlist_btn()
-app.is_auth_exist()
+app.click_on_product_image()
+app.choose_product_size()
+app.click_on_watchlist_btn_2()
 
 
 # except:
