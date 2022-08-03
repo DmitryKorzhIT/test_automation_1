@@ -5,22 +5,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 
-
 BASE_URL = const.BASE_URL
 PASSWORD = const.PASSWORD
 
 
-class AddToWatchlist(webdriver.Chrome):
+class Base(webdriver.Chrome):
     def __init__(self, teardown=False):  # the teardown is a condition for the __exit__ method
         self.teardown = teardown
-        super(AddToWatchlist, self).__init__()
+        super(Base, self).__init__()
         self.implicitly_wait(15)
         self.maximize_window()
 
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.teardown:
-            # time.sleep(10)
             self.quit()
 
 
@@ -54,13 +52,6 @@ class AddToWatchlist(webdriver.Chrome):
                 item.click()
 
 
-    def click_on_watchlist_btn(self, product_number=2):
-        ''' Click on one of the product's watchlist buttons. '''
-
-        watchlist_btns = self.find_elements(By.CLASS_NAME, 'watch--alternative')
-        watchlist_btns[product_number].click()
-
-
     def is_auth_exist(self):
         ''' Check if authentication message is shown. '''
 
@@ -82,22 +73,6 @@ class AddToWatchlist(webdriver.Chrome):
         product_sizes[size_number].click()
 
 
-    def click_on_watchlist_btn_2(self):
-        ''' Click on the watchlist button which is inside the product card.
-        This button is located top right. '''
-
-        watchlist_btn = self.find_element(By.CSS_SELECTOR, 'img[alt="Add to favorite"]')
-        watchlist_btn.click()
-
-
-    def click_on_watchlist_btn_3(self):
-        ''' Click on the watchlist button which is inside the product card.
-        This button is located under product sizes. '''
-
-        watchlist_btn = self.find_element(By.CLASS_NAME, 'product-actions__btn')
-        watchlist_btn.click()
-
-
     def header_icons_item(self, header_icons_item_name: str = 'Watchlist'):
         ''' Pick any element from the header icons which are on the top right. '''
 
@@ -117,8 +92,3 @@ class AddToWatchlist(webdriver.Chrome):
         for item in tabs_items:
             if str(item.get_attribute('innerHTML')).strip() == tabs_item_name:
                 self.execute_script("arguments[0].click();", item)  # the only way I could click the link
-
-
-
-
-
