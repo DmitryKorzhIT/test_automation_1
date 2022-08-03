@@ -1,6 +1,9 @@
 from . import constant as const
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
 
 
 BASE_URL = const.BASE_URL
@@ -8,7 +11,7 @@ PASSWORD = const.PASSWORD
 
 
 class AddToWatchlist(webdriver.Chrome):
-    def __init__(self, teardown=False):  # teardown is a condition for __exit__ method
+    def __init__(self, teardown=False):  # the teardown is a condition for the __exit__ method
         self.teardown = teardown
         super(AddToWatchlist, self).__init__()
         self.implicitly_wait(15)
@@ -39,7 +42,7 @@ class AddToWatchlist(webdriver.Chrome):
 
 
     def burger_menu_item(self, nav_item_name: str = 'Watchlist'):
-        ''' Pick any element from left side burger menu. '''
+        ''' Pick any element from the left side burger menu. '''
 
         burger_element = self.find_element(By.CLASS_NAME, 'left-side__burger')
         burger_element.click()
@@ -47,19 +50,19 @@ class AddToWatchlist(webdriver.Chrome):
         burger_menu_items = self.find_element(By.CLASS_NAME, 'menus-block-nav')
         burger_menu_items = burger_menu_items.find_elements(By.CLASS_NAME, 'nav-item')
         for item in burger_menu_items:
-            if str(item.get_attribute('innerHTML')).strip() == f'{nav_item_name}':
+            if str(item.get_attribute('innerHTML')).strip() == nav_item_name:
                 item.click()
 
 
     def click_on_watchlist_btn(self, product_number=2):
-        ''' Click on one of the products watchlist buttons. '''
+        ''' Click on one of the product's watchlist buttons. '''
 
         watchlist_btns = self.find_elements(By.CLASS_NAME, 'watch--alternative')
         watchlist_btns[product_number].click()
 
 
     def is_auth_exist(self):
-        ''' Check is authentication message is shown. '''
+        ''' Check if authentication message is shown. '''
 
         auth_window = self.find_element(By.CLASS_NAME, 'auth')
         return auth_window
@@ -73,14 +76,49 @@ class AddToWatchlist(webdriver.Chrome):
 
 
     def choose_product_size(self, size_number=0):
-        ''' Click on one of sizes buttons to choose size of a product. '''
+        ''' Click on one of the sizes buttons to choose the size of a product. '''
 
         product_sizes = self.find_elements(By.CLASS_NAME, 'product-sizes__size')
         product_sizes[size_number].click()
 
 
     def click_on_watchlist_btn_2(self):
-        ''' Click on watchlist button which is inside the product card. '''
+        ''' Click on the watchlist button which is inside the product card.
+        This button is located top right. '''
 
         watchlist_btn = self.find_element(By.CSS_SELECTOR, 'img[alt="Add to favorite"]')
         watchlist_btn.click()
+
+
+    def click_on_watchlist_btn_3(self):
+        ''' Click on the watchlist button which is inside the product card.
+        This button is located under product sizes. '''
+
+        watchlist_btn = self.find_element(By.CLASS_NAME, 'product-actions__btn')
+        watchlist_btn.click()
+
+
+    def header_icons_item(self, header_icons_item_name: str = 'Watchlist'):
+        ''' Pick any element from the header icons which are on the top right. '''
+
+        header_icons_items = self.find_element(By.CLASS_NAME, 'header-icons')
+        header_icons_items = header_icons_items.find_elements(By.CLASS_NAME, 'header-icons-item__text')
+        for item in header_icons_items:
+            if str(item.get_attribute('innerHTML')).strip() == header_icons_item_name:
+                item.click()
+
+
+    def tabs_item(self, tabs_item_name: str = 'Watch'):
+        ''' Pick any element from the tabs which are on the bottom of the page. '''
+
+        action = ActionChains(self)
+        tabs_items = self.find_element(By.CLASS_NAME, 'tabs')
+        tabs_items = tabs_items.find_elements(By.CLASS_NAME, 'button__link.ng-star-inserted')
+        for item in tabs_items:
+            if str(item.get_attribute('innerHTML')).strip() == tabs_item_name:
+                self.execute_script("arguments[0].click();", item)  # the only way I could click the link
+
+
+
+
+
